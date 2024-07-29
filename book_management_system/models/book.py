@@ -24,11 +24,11 @@ class Book:
 
 class RegisteredBook(Book):
     def __init__(self, name: BookName, genre: str, is_checked_out: bool) -> None:
-        super().__init__(self, name, genre)
+        super().__init__(name, genre)
         self.is_checked_out = is_checked_out
 
 
 class UnregisteredBook(Book):
     def __init__(self, name: BookName, genre: str) -> None:
         # Memo: Bookクラスと変わらないが、未登録の本のみを指定するメソッドを作るためにサブクラスを定義する
-        super().__init__(self, name, genre)
+        super().__init__(name, genre)
