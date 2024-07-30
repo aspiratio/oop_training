@@ -5,6 +5,7 @@ class BookName:
             raise ValueError("名前を入力してください")
         if len(value) > 10:
             raise ValueError("名前は10文字以内です")
+        self.value = value
 
 
 # メインで使用するクラス
@@ -14,11 +15,11 @@ class Book:
         self._genre = genre
 
     @property
-    def name(self):
+    def name(self) -> BookName:
         return self._name
 
     @property
-    def genre(self):
+    def genre(self) -> str:
         return self._genre
 
 
