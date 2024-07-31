@@ -3,8 +3,8 @@ class BookName:
     def __init__(self, value: str) -> None:
         if len(value) == 0:
             raise ValueError("名前を入力してください")
-        if len(value) > 10:
-            raise ValueError("名前は10文字以内です")
+        if len(value) > 20:
+            raise ValueError("名前は20文字以内です")
         self.value = value
 
     def __str__(self):
@@ -34,5 +34,11 @@ class RegisteredBook(Book):
 
 class UnregisteredBook(Book):
     def __init__(self, name: BookName, genre: str) -> None:
-        # Memo: Bookクラスと変わらないが、未登録の本のみを指定するメソッドを作るためにサブクラスを定義する
         super().__init__(name, genre)
+        self._is_checked_out = False
+
+    @property
+    def is_checked_out(
+        self,
+    ):  # 登録前の本は貸出されることがないため、外から変更できないようにする
+        return self._is_checked_out
