@@ -7,6 +7,9 @@ class BookName:
             raise ValueError("名前は10文字以内です")
         self.value = value
 
+    def __str__(self):
+        return self.value
+
 
 # メインで使用するクラス
 class Book:
