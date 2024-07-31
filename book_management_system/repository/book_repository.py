@@ -13,7 +13,11 @@ from search_criteria.search_criteria import SearchCriteria
 
 class BookRepository(ABC):
     @abstractmethod
-    def search(self, criteria: SearchCriteria) -> list[RegisteredBook]:
+    def search(self, criteria: list[SearchCriteria]) -> list[RegisteredBook]:
+        pass
+
+    @abstractmethod
+    def add(self, book: UnregisteredBook) -> None:
         pass
 
 
