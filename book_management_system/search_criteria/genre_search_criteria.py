@@ -8,4 +8,7 @@ class ExactMatchGenreSearchCriteria(SearchCriteria):
         self._genre = genre
 
     def to_sql(self) -> str:
-        return f"genre = '{self._genre}'"
+        return "genre = ?"
+
+    def get_params(self) -> list:
+        return [self._genre]

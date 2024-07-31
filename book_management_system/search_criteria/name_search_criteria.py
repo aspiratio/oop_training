@@ -8,4 +8,7 @@ class LikeNameSearchCriteria(SearchCriteria):
         self._name = name
 
     def to_sql(self) -> str:
-        return f"genre = '{self._genre}'"
+        return f"genre = ?"  # SQLインジェクション対策のプレースホルダー
+
+    def get_params(self):
+        return [self._name]

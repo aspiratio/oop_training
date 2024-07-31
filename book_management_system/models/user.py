@@ -1,6 +1,6 @@
-from book_management_system.models.book import RegisteredBook, UnregisteredBook
-from book_management_system.repository.book_repository import BookRepository
-from book_management_system.search_criteria.search_criteria import SearchCriteria
+from models.book import RegisteredBook, UnregisteredBook
+from repository.book_repository import BookRepository
+from search_criteria.search_criteria import SearchCriteria
 
 
 # 値オブジェクト

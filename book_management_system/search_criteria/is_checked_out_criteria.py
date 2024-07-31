@@ -1,4 +1,4 @@
-from book_management_system.search_criteria.search_criteria import SearchCriteria
+from search_criteria.search_criteria import SearchCriteria
 
 
 class ExactMatchIsCheckedOutSearchCriteria(SearchCriteria):
@@ -6,4 +6,7 @@ class ExactMatchIsCheckedOutSearchCriteria(SearchCriteria):
         self._is_checked_out = is_checked_out
 
     def to_sql(self) -> str:
-        return f"is_checked_out = {self._is_checked_out}"
+        return "is_checked_out = ?"
+
+    def get_params(self) -> list:
+        return [self._is_checked_out]
