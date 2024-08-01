@@ -1,4 +1,4 @@
-from search_criteria import SearchCriteria
+from search_criteria.search_criteria import SearchCriteria
 
 
 class ExactMatchGenreSearchCriteria(SearchCriteria):
