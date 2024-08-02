@@ -40,8 +40,12 @@ class UserApplicationService:
     def __init__(self, repository: BookRepository) -> None:
         self.repository = repository
 
-    def search_books(self, criteria: list[SearchCriteria]) -> None:
-        results = self.repository.search(criteria)
+    def search_books(self, criteria: list[SearchCriteria], limit: int = None) -> None:
+        if limit:
+            results = self.repository.search(criteria, limit)
+        else:
+            results = self.repository.search(criteria)
+
         for result in results:
             print(result.name, result.genre, result.is_checked_out)
 
@@ -59,5 +63,6 @@ class AdminUserApplicationService(UserApplicationService):
         book = UnregisteredBook(name, genre)
         self.repository.add(book)
 
-    def deregister_book(self, book: RegisteredBook):
-        pass
+    def deregister_book(self, book_id: int) -> None:
+        rowcount = self.repository.delete(book_id)
+        print(f"{rowcount}件の削除に成功しました")

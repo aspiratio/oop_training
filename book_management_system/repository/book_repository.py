@@ -42,15 +42,31 @@ class SQLiteBookRepository(BookRepository):
         is_checked_out = unregistered_book.is_checked_out
         return {"name": name, "genre": genre, "is_checked_out": is_checked_out}
 
-    def search(self, criteria: list[SearchCriteria]) -> list[RegisteredBook]:
+    def _create_where_statement(self, criteria: list[SearchCriteria]) -> str:
         where_clauses = [criterion.to_sql() for criterion in criteria]
-        where_statement = "AND".join(where_clauses)
-        query = f"SELECT name, genre, is_checked_out FROM books WHERE {where_statement} ORDER BY genre, name"
+        return " AND ".join(where_clauses)
 
+    def _create_placeholder_params(
+        self, criteria: list[SearchCriteria], limit: int
+    ) -> list:
         params = []
         for criterion in criteria:
             param = criterion.get_params()
             params.extend(param)  # プレースホルダーに入れる値を一つのリストにする
+
+        params.append(int(limit))  # LIMITをパラメータとして追加
+        return params
+
+    def search(
+        self, criteria: list[SearchCriteria], limit: int = 100
+    ) -> list[RegisteredBook]:
+        if len(criteria) != 0:
+            where_statement = self._create_where_statement(criteria)
+        else:
+            where_statement = "1 = 1"
+        params = self._create_placeholder_params(criteria, limit)
+
+        query = f"SELECT name, genre, is_checked_out FROM books WHERE {where_statement} ORDER BY genre, name LIMIT ?"
 
         with self._connection_manager as connection:
             cursor = connection.cursor()
@@ -66,3 +82,15 @@ class SQLiteBookRepository(BookRepository):
             cursor = connection.cursor()
             cursor.execute(query, book_dict)
             connection.commit()
+
+    def delete(self, book_id: int) -> int:
+        query = f"DELETE FROM books WHERE ?"
+
+        with self._connection_manager as connection:
+            cursor = connection.cursor()
+            cursor.execute(
+                query,
+                [book_id],
+            )
+            connection.commit()
+            return cursor.rowcount
