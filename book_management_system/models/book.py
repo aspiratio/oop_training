@@ -7,7 +7,7 @@ class BookName:
             raise ValueError("名前は20文字以内です")
         self.value = value
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.value
 
 
