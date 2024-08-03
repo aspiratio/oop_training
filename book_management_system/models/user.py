@@ -35,9 +35,14 @@ class User:
     def name(self) -> UserName:
         return self._name
 
+    @property
+    def is_admin(self) -> bool:
+        return self._is_admin
+
 
 class UserApplicationService:
-    def __init__(self, repository: BookRepository) -> None:
+    def __init__(self, user: User, repository: BookRepository) -> None:
+        self.user = user
         self.repository = repository
 
     def search_books(self, criteria: list[SearchCriteria], limit: int = None) -> None:
@@ -51,6 +56,11 @@ class UserApplicationService:
 
 
 class GeneralUserApplicationService(UserApplicationService):
+    def __init__(self, user: User, repository: BookRepository) -> None:
+        if user.is_admin:
+            raise PermissionError("管理者ユーザーは利用できません")
+        super().__init__(user, repository)
+
     def rent_book(self, book_id: int) -> None:
         rowcount = self.repository.update(book_id, "is_checked_out", True)
         if rowcount == 0:
@@ -65,6 +75,11 @@ class GeneralUserApplicationService(UserApplicationService):
 
 
 class AdminUserApplicationService(UserApplicationService):
+    def __init__(self, user: User, repository: BookRepository) -> None:
+        if not user.is_admin:
+            raise PermissionError("一般ユーザーは利用できません")
+        super().__init__(user, repository)
+
     def register_book(self, name: BookName, genre: str) -> None:
         book = UnregisteredBook(name, genre)
         self.repository.add(book)

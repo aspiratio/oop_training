@@ -1,7 +1,10 @@
 from models.user import (
     AdminUserApplicationService,
     GeneralUserApplicationService,
+    User,
     UserApplicationService,
+    UserId,
+    UserName,
 )
 from repository.book_repository import SQLiteBookRepository
 from models.book import BookName
@@ -12,14 +15,18 @@ from search_criteria.genre_search_criteria import ExactMatchGenreSearchCriteria
 def main():
     connection_manager = SQLiteConnectionManager("book_management.db")
     repo = SQLiteBookRepository(connection_manager)
-    admin_user_application_service = AdminUserApplicationService(repo)
-    general_user_application_service = GeneralUserApplicationService(repo)
+
+    general_user = User(UserId("user1"), UserName("田中"), False)
+    admin_user = User(UserId("user2"), UserName("斉藤"), True)
+
+    general_user_application_service = GeneralUserApplicationService(general_user, repo)
+    admin_user_application_service = AdminUserApplicationService(admin_user, repo)
 
     # register(admin_user_application_service)
     # search(general_user_application_service)
     # delete(admin_user_application_service)
-    rent(general_user_application_service)
-    # return_(general_user_application_service)
+    # rent(general_user_application_service)
+    return_(general_user_application_service)
 
 
 def register(admin_user_application_service: AdminUserApplicationService):
@@ -48,11 +55,11 @@ def delete(admin_user_application_service: AdminUserApplicationService):
 
 
 def rent(general_user_application_service: GeneralUserApplicationService):
-    general_user_application_service.rent_book(17)
+    general_user_application_service.rent_book(18)
 
 
 def return_(general_user_application_service: GeneralUserApplicationService):
-    general_user_application_service.return_book(17)
+    general_user_application_service.return_book(18)
 
 
 if __name__ == "__main__":
