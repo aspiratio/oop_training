@@ -62,6 +62,7 @@ class AdminUserApplicationService(UserApplicationService):
     def register_book(self, name: BookName, genre: str) -> None:
         book = UnregisteredBook(name, genre)
         self.repository.add(book)
+        print(f"{name}を登録しました")
 
     def deregister_book(self, book_id: int) -> None:
         rowcount = self.repository.delete(book_id)
