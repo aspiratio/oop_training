@@ -84,7 +84,7 @@ class SQLiteBookRepository(BookRepository):
             connection.commit()
 
     def delete(self, book_id: int) -> int:
-        query = f"DELETE FROM books WHERE ?"
+        query = f"DELETE FROM books WHERE id = ?"
 
         with self._connection_manager as connection:
             cursor = connection.cursor()
