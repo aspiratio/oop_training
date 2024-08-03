@@ -51,8 +51,9 @@ class UserApplicationService:
 
 
 class GeneralUserApplicationService(UserApplicationService):
-    def rent_book(self, book: RegisteredBook) -> None:
-        pass
+    def rent_book(self, book_id: int) -> None:
+        rowcount = self.repository.update(book_id, "is_checked_out", True)
+        print(f"{rowcount}冊の本を貸出しました")
 
     def return_book(self, book: RegisteredBook) -> None:
         pass
@@ -66,4 +67,4 @@ class AdminUserApplicationService(UserApplicationService):
 
     def deregister_book(self, book_id: int) -> None:
         rowcount = self.repository.delete(book_id)
-        print(f"{rowcount}件の削除に成功しました")
+        print(f"{rowcount}冊の削除に成功しました")

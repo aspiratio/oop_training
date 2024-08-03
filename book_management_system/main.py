@@ -16,8 +16,9 @@ def main():
     general_user_application_service = GeneralUserApplicationService(repo)
 
     # register(admin_user_application_service)
-    search(general_user_application_service)
+    # search(general_user_application_service)
     # delete(admin_user_application_service)
+    rent(general_user_application_service)
 
 
 def register(admin_user_application_service: AdminUserApplicationService):
@@ -42,7 +43,11 @@ def search(user_application_service: UserApplicationService):
 
 
 def delete(admin_user_application_service: AdminUserApplicationService):
-    admin_user_application_service.deregister_book(1)
+    admin_user_application_service.deregister_book(10)
+
+
+def rent(general_user_application_service: GeneralUserApplicationService):
+    general_user_application_service.rent_book(17)
 
 
 if __name__ == "__main__":

@@ -13,11 +13,21 @@ from search_criteria.search_criteria import SearchCriteria
 
 class BookRepository(ABC):
     @abstractmethod
-    def search(self, criteria: list[SearchCriteria]) -> list[RegisteredBook]:
+    def search(
+        self, criteria: list[SearchCriteria], limit: int
+    ) -> list[RegisteredBook]:
         pass
 
     @abstractmethod
     def add(self, book: UnregisteredBook) -> None:
+        pass
+
+    @abstractmethod
+    def delete(self, book_id: int) -> int:
+        pass
+
+    @abstractmethod
+    def update(self, book_id: int, column: str, new_value: any) -> int:
         pass
 
 
@@ -92,5 +102,25 @@ class SQLiteBookRepository(BookRepository):
                 query,
                 [book_id],
             )
+            connection.commit()
+            return cursor.rowcount
+
+    def update(self, book_id: int, column: str, new_value: any) -> int:
+        # データベースからカラム名を取得
+        with self._connection_manager as connection:
+            cursor = connection.cursor()
+            cursor.execute("PRAGMA table_info(books)")
+            columns_info = cursor.fetchall()
+            allowed_columns = {info[1] for info in columns_info}
+
+        # SQLインジェクション対策：テーブルに存在するカラム以外が渡されたらエラーにする
+        if column not in allowed_columns:
+            raise ValueError(f"Invalid column name: {column}")
+
+        query = f"UPDATE books SET {column} = ? WHERE id = ?"
+
+        with self._connection_manager as connection:
+            cursor = connection.cursor()
+            cursor.execute(query, [new_value, book_id])
             connection.commit()
             return cursor.rowcount
