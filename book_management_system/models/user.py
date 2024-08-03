@@ -53,10 +53,14 @@ class UserApplicationService:
 class GeneralUserApplicationService(UserApplicationService):
     def rent_book(self, book_id: int) -> None:
         rowcount = self.repository.update(book_id, "is_checked_out", True)
+        if rowcount == 0:
+            raise RuntimeError("その本は貸出中です")
         print(f"{rowcount}冊の本を貸出しました")
 
     def return_book(self, book_id: int) -> None:
         rowcount = self.repository.update(book_id, "is_checked_out", False)
+        if rowcount == 0:
+            raise RuntimeError("その本は返却済みです")
         print(f"{rowcount}冊の本を返却しました")
 
 

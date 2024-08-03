@@ -18,8 +18,8 @@ def main():
     # register(admin_user_application_service)
     # search(general_user_application_service)
     # delete(admin_user_application_service)
-    # rent(general_user_application_service)
-    return_(general_user_application_service)
+    rent(general_user_application_service)
+    # return_(general_user_application_service)
 
 
 def register(admin_user_application_service: AdminUserApplicationService):

@@ -115,7 +115,18 @@ class SQLiteBookRepository(BookRepository):
 
         # SQLインジェクション対策：テーブルに存在するカラム以外が渡されたらエラーにする
         if column not in allowed_columns:
-            raise ValueError(f"Invalid column name: {column}")
+            raise ValueError(f"存在しないカラムが指定されました: {column}")
+
+        # 元の値を取得
+        with self._connection_manager as connection:
+            query_select = f"SELECT {column} FROM books WHERE id = ?"
+            cursor = connection.cursor()
+            cursor.execute(query_select, [book_id])
+            original_value = cursor.fetchone()[0]
+
+        # 元の値と新しい値が同じなら更新をスキップ
+        if original_value == new_value:
+            return 0
 
         query = f"UPDATE books SET {column} = ? WHERE id = ?"
 
