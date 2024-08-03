@@ -55,8 +55,9 @@ class GeneralUserApplicationService(UserApplicationService):
         rowcount = self.repository.update(book_id, "is_checked_out", True)
         print(f"{rowcount}冊の本を貸出しました")
 
-    def return_book(self, book: RegisteredBook) -> None:
-        pass
+    def return_book(self, book_id: int) -> None:
+        rowcount = self.repository.update(book_id, "is_checked_out", False)
+        print(f"{rowcount}冊の本を返却しました")
 
 
 class AdminUserApplicationService(UserApplicationService):
