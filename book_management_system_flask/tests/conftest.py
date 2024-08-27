@@ -5,7 +5,7 @@ import pytest
 from app import create_app
 from app.db import get_engine, init_db
 from sqlmodel import Session
-from app.models import *
+from app.models import User, Book, Loan
 
 
 def _add_mock_data():
