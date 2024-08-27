@@ -12,8 +12,8 @@ def _add_mock_data():
     engine = get_engine()
     with Session(engine) as session:
         mock_data = [
-            User(name="太郎", is_admin=0),
-            User(name="サトシ", is_admin=1),
+            User(name="太郎", password="password", is_admin=0),
+            User(name="サトシ", password="password", is_admin=1),
             Book(name="スッキリわかるJAVA入門", genre="技術書"),
             Book(name="ハンターハンター", genre="マンガ"),
             Loan(
