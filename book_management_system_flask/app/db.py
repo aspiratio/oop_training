@@ -1,12 +1,16 @@
 import click
-from flask import current_app
+from flask import current_app, g
 from sqlmodel import SQLModel, create_engine
 from .models import *
 
+def get_engine():
+    if "engine" not in g:
+        database_url = current_app.config["DATABASE_URL"]
+        g.engine = create_engine(database_url, echo=True)
+    return g.engine
 
 def init_db():
-    database_url = current_app.config["DATABASE_URL"]
-    engine = create_engine(database_url, echo=True)
+    engine = get_engine()
     SQLModel.metadata.create_all(engine)  # models で定義したテーブルを作る
 
 
@@ -19,3 +23,4 @@ def init_db_command():
 
 def init_app(app):
     app.cli.add_command(init_db_command)
+
