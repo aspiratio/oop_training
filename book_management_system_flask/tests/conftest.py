@@ -1,7 +1,7 @@
 import os
 import tempfile
-
 import pytest
+from datetime import date
 from app import create_app
 from app.db import get_engine, init_db
 from sqlmodel import Session
@@ -19,15 +19,15 @@ def _add_mock_data():
             Loan(
                 book_id=1,
                 user_id=1,
-                loan_date="2024-08-01",
-                return_due_date="2024-09-01",
+                loan_date=date(2024, 8, 1),
+                return_due_date=date(2024, 9, 1),
             ),
             Loan(
                 book_id=2,
                 user_id=2,
-                loan_date="2024-08-02",
-                return_due_date="2024-09-02",
-                return_date="2024-08-10",
+                loan_date=date(2024, 8, 2),
+                return_due_date=date(2024, 9, 2),
+                return_date=date(2024, 8, 10),
             ),
         ]
         session.add_all(mock_data)
