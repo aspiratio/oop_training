@@ -1,7 +1,8 @@
 from sqlmodel import Field, SQLModel
+from flask_login import UserMixin
 
 
-class User(SQLModel, table=True):
+class User(UserMixin, SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     name: str
     password: str

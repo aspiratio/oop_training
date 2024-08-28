@@ -37,8 +37,9 @@ def _add_mock_data():
 @pytest.fixture
 def test_app():
     db_fd, db_path = tempfile.mkstemp()
+    database_url = f"sqlite:///{db_path}"
 
-    app = create_app({"TESTING": True, "DATABASE_URL": db_path})
+    app = create_app({"TESTING": True, "DATABASE_URL": database_url})
 
     with app.app_context():
         init_db()
@@ -51,5 +52,5 @@ def test_app():
 
 
 @pytest.fixture
-def test_client(app):
-    return app.test_client()
+def test_client(test_app):
+    return test_app.test_client()
